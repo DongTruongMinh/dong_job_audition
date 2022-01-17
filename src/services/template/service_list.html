@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Geo's Hub</title>
+</head>
+<body>
+<select id="platform">
+    <option value="">All</option>
+    <option value="windows">Windows</option>
+    <option value="android">Android</option>
+    <option value="ios">iOS</option>
+</select>
+<input type="text" id="search" onkeydown="search()" placeholder="Search for name..">
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>OS Platform</th>
+    </tr>
+    {% for object in objects %}
+        <tr onclick="location.href = 'http:\/\/' + location.host + '/service/' + {{ object.id }}">
+            <td>{{ object.name }}</td>
+            <td>{{ object.price }}</td>
+            <td>{{ object.os_platform }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+
+<footer>
+    <p>Call us:<br>
+    <a>+X XXX-XXX-XXX</a></p>
+</footer>
+
+<script type="text/javascript">
+    function filter(col, value) {
+        var tr_element, td_element, i, txtValue;
+        tr_element = document.getElementsByTagName('tr');
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < tr_element.length; i++) {
+            td_element = tr_element[i].getElementsByTagName('td');
+            txtValue = (td_element.length > 0) ? td_element[col].innerText : undefined;
+            if (txtValue) {
+                if (txtValue && txtValue.toLowerCase().indexOf(value) > -1) {
+                    tr_element[i].style.display = "";
+                } else {
+                    tr_element[i].style.display = "none";
+                }
+            }
+        }
+    };
+    document.getElementById("platform").onchange = function (e) {
+        var value;
+        value = document.getElementById("platform").value;
+        filter(2, value.toLowerCase());
+    };
+    document.getElementById("search").onkeydown = function (e) {
+        if (e.key == 'Enter' && e.keyCode == 13) {
+            var input, tr_element, td_element, i, txtValue;
+            input = document.getElementById('search');
+            if (input.value) {
+                location.href = ('http://' + location.host +
+                    '/service/?q=' + input.value.toLowerCase());
+            }
+        }
+    };
+
+</script>
